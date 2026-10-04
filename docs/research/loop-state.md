@@ -30,6 +30,20 @@ WorkManager entrypoints removed from release manifest and contract-tested.
 Deferred decisions: Play publication and broader assistant tasks out of scope.
 Open release evidence: physical on-device speech and live BYOK transcription,
 as documented in device-verification.md; do not claim full voice release acceptance.
-Next action: review documentation-only evidence/cache-ignore update, then push
-approved scope to own main and verify remote/CI. No deployment or Play publication.
-Final commit / remote verification: pending.
+Delivery: code and workflow commit `81a778d55c7b243646b0081f30c8a480a9b78908`
+was pushed to `SyedHasanCronosPMC/vdx-android` main; `git ls-remote` confirmed the
+same hash. Main is the default branch. Completed task branches were deleted only
+after main contained their commits. Permanent checkout: `D:/Github/vdx-android`.
+
+Remote verification: [clean GitHub run 37221966321](https://github.com/SyedHasanCronosPMC/vdx-android/actions/runs/37221966321)
+passed all four Gradle tasks, 104 executed, with APK/report artifacts uploaded.
+The first run failed before compilation because setup-android's default requested
+the retired SDK package `tools`. Independently reviewed commit `81a778d` selects
+`platform-tools` explicitly; the clean run verified that repair before main merge.
+
+Final evidence: debug and unsigned release APKs plus synthetic emulator captures
+are saved under the permanent checkout's ignored `artifacts/` directory. This
+documentation update records delivery without changing reviewed application code.
+No deployment, release signing, real call, or Play publication was performed.
+Remaining action: physical-device voice and live-key provider acceptance described
+above; repository implementation/build delivery is verified.

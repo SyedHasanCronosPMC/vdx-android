@@ -27,6 +27,13 @@ Date: 2026-10-04. All contacts/numbers used below are synthetic test fixtures.
   that condition and offered fallback choices without silently starting a cloud
   recognizer. A system keyboard stylus tutorial briefly obscured touch input;
   closing that system overlay restored normal interaction.
+- Optional bubble setup was exercised through Android's overlay settings. The
+  service inspection showed `CallBubbleService`, `isForeground=true`, microphone
+  type `0x80`, launched from the visible app; no Accessibility was enabled.
+- The final saved debug APK was freshly reinstalled and the exact numeric input
+  `2025550123` was checked before confirmation and again in the actual dialer.
+  APK SHA-256: `CFA9D436385875FA24083D31CD05DC08454A9E5C915965263F185703799C8AF5`.
+  Final captures are `artifacts/device/final-confirmation.*` and `final-dialer.*`.
 
 ## Repeat the acceptance test
 
