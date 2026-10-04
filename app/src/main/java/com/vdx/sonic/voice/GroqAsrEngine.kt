@@ -39,7 +39,7 @@ class GroqAsrEngine(
      * @return ASR result with transcript and confidence
      */
     suspend fun transcribe(audioData: ShortArray): AsrResult = withContext(Dispatchers.IO) {
-        val wavBytes = pcm16ToWav(audioData)
+        val wavBytes = WavUtil.pcm16ToWav(audioData, SAMPLE_RATE)
         val result = transcribeWav(wavBytes)
         result
     }
@@ -121,7 +121,7 @@ class GroqAsrEngine(
     /**
      * Parse Groq Whisper response JSON.
      */
-    private fun parseResponse(jsonStr: String): AsrResult {
+    internal fun parseResponse(jsonStr: String): AsrResult {
         val json = JSONObject(jsonStr)
         val text = json.optString("text", "").trim()
 
@@ -142,7 +142,14 @@ class GroqAsrEngine(
                 val segText = seg.optString("text", "").trim()
                 val start = (seg.optDouble("start", 0.0) * 1000).toLong()
                 val end = (seg.optDouble("end", 0.0) * 1000).toLong()
-                val conf = seg.optDouble("confidence", 0.0).toFloat()
+                // Whisper supplies log probability and silence probability, not
+                // a confidence field. This conservative score is a quality gate,
+                // not a calibrated probability that the named contact is correct.
+                val logProbability = seg.optDouble("avg_logprob", Double.NaN)
+                val silence = seg.optDouble("no_speech_prob", Double.NaN)
+                val conf = if (logProbability.isFinite() && silence in 0.0..0.6) {
+                    (kotlin.math.exp(logProbability) * (1.0 - silence)).toFloat().coerceIn(0f, 1f)
+                } else 0f
 
                 if (segText.isNotBlank()) {
                     avgConfidence += conf
@@ -156,7 +163,7 @@ class GroqAsrEngine(
             avgConfidence /= segmentCount
         }
 
-        val language = json.optString("language", null)
+        val language = json.optString("language", "").takeIf { it.isNotBlank() }
 
         return AsrResult(
             text = text,
@@ -185,44 +192,6 @@ class GroqAsrEngine(
 
         // Threshold: if no_speech_prob > 0.1, it's a hallucination
         return noSpeechProb >= 0.1
-    }
-
-    /**
-     * Convert PCM16 short array to WAV format bytes.
-     */
-    private fun pcm16ToWav(samples: ShortArray): ByteArray {
-        val byteRate = SAMPLE_RATE * 2 // 16-bit = 2 bytes per sample
-        val dataSize = samples.size * 2
-        val fileSize = 36 + dataSize
-
-        val bos = ByteArrayOutputStream()
-        val dos = DataOutputStream(bos)
-
-        // RIFF header
-        dos.writeBytes("RIFF")
-        dos.writeInt(Integer.reverseBytes(fileSize))
-        dos.writeBytes("WAVE")
-
-        // fmt chunk
-        dos.writeBytes("fmt ")
-        dos.writeInt(Integer.reverseBytes(16)) // chunk size
-        dos.writeShort(Integer.reverseBytes(1)) // PCM format
-        dos.writeShort(Integer.reverseBytes(1)) // mono
-        dos.writeInt(Integer.reverseBytes(SAMPLE_RATE))
-        dos.writeInt(Integer.reverseBytes(byteRate))
-        dos.writeShort(Integer.reverseBytes(2)) // block align
-        dos.writeShort(Integer.reverseBytes(16)) // bits per sample
-
-        // data chunk
-        dos.writeBytes("data")
-        dos.writeInt(Integer.reverseBytes(dataSize))
-
-        // Write PCM samples
-        for (sample in samples) {
-            dos.writeShort(Integer.reverseBytes(sample.toInt()))
-        }
-
-        return bos.toByteArray()
     }
 
     private fun readStream(stream: InputStream): String {

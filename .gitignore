@@ -26,3 +26,7 @@ local.properties
 # Local APK drops and machine notes — not product source
 dist/
 HANDOVER-IDA.md
+
+# Local verification outputs (summarized in docs/research)
+/artifacts/
+/*.log

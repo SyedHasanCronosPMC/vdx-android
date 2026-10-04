@@ -1,0 +1,18 @@
+<resources>
+    <string name="call_app_name">VDX Call</string>
+    <string name="call_title">Who do you want to reach?</string>
+    <string name="call_intro">Say a name. Check the person. Open the dialer.</string>
+    <string name="call_privacy">No account. No VDX cloud. Voice stays on your device when on-device recognition is available. Optional voice fallbacks may send audio to a provider.</string>
+    <string name="call_ready">Tap to say a name, or type below.</string>
+    <string name="call_speak">Tap to speak</string>
+    <string name="call_hint">Name or phone number</string>
+    <string name="call_find">Find person</string>
+    <string name="call_confirm">Yes, open dialer</string>
+    <string name="call_cancel">Cancel</string>
+    <string name="call_bubble">Floating microphone</string>
+    <string name="call_fallback">Voice fallback options</string>
+    <string name="call_voice_settings">Optional cloud voice key</string>
+    <string name="call_notification_channel">Tap-to-talk microphone</string>
+    <string name="call_notification">Tap the floating mic to speak. Hold it to close.</string>
+    <string name="call_stop_bubble">Close microphone</string>
+</resources>

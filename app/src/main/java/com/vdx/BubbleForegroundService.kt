@@ -225,11 +225,12 @@ class BubbleForegroundService : Service() {
         isRunning = true
         runningInstance = this
         createNotificationChannel()
-        startForeground(
-            NOTIF_ID,
-            buildNotification(),
-            android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(NOTIF_ID, buildNotification(),
+                android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+        } else {
+            startForeground(NOTIF_ID, buildNotification())
+        }
         initTTS()
         showBubble()
         Log.d(TAG, "onCreate: service started, bubble should be visible")

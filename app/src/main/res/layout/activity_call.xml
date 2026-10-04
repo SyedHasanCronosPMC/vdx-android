@@ -1,0 +1,36 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/call_root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true" android:background="#F6F5F1">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="24dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/call_app_name" android:textColor="#344638" android:textSize="18sp" android:textStyle="bold" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="24dp" android:text="@string/call_title" android:textColor="#14251B" android:textSize="32sp" android:textStyle="bold" android:accessibilityHeading="true" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" android:text="@string/call_intro" android:textColor="#344638" android:textSize="20sp" />
+        <TextView android:id="@+id/call_status" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="24dp" android:text="@string/call_ready" android:textColor="#14251B" android:textSize="22sp" android:accessibilityLiveRegion="polite" />
+        <Button android:id="@+id/call_speak" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="80dp" android:layout_marginTop="20dp" android:text="@string/call_speak" android:textSize="22sp" />
+        <EditText android:id="@+id/call_input" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="64dp" android:hint="@string/call_hint" android:textColorHint="#526156" android:textColor="#14251B" android:textSize="22sp" android:inputType="textPersonName" android:imeOptions="actionSearch" android:singleLine="true" android:saveEnabled="false" android:importantForAutofill="no" />
+        <Button android:id="@+id/call_find" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="56dp" android:text="@string/call_find" android:textSize="20sp" />
+        <LinearLayout android:id="@+id/call_choices" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+        <TextView android:id="@+id/call_target" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textSize="24sp" android:textStyle="bold" android:textColor="#14251B" android:visibility="gone" android:saveEnabled="false" />
+        <Button android:id="@+id/call_confirm" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="64dp" android:text="@string/call_confirm" android:textSize="22sp" android:visibility="gone" />
+        <Button android:id="@+id/call_cancel" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="56dp" android:text="@string/call_cancel" android:textSize="20sp" />
+        <Button android:id="@+id/call_fallback" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="56dp" android:text="@string/call_fallback" android:visibility="gone" />
+        <Button android:id="@+id/call_bubble" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="56dp" android:text="@string/call_bubble" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="24dp" android:text="@string/call_privacy" android:textColor="#344638" android:textSize="16sp" />
+        <Button android:id="@+id/call_voice_settings" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="48dp" android:text="@string/call_voice_settings" />
+    </LinearLayout>
+</ScrollView>

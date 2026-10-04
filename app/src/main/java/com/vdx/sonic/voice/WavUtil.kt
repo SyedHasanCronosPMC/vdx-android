@@ -16,16 +16,16 @@ object WavUtil {
         dos.writeBytes("WAVE")
         dos.writeBytes("fmt ")
         dos.writeInt(Integer.reverseBytes(16))
-        dos.writeShort(Integer.reverseBytes(1))
-        dos.writeShort(Integer.reverseBytes(1))
+        dos.writeShort(java.lang.Short.reverseBytes(1.toShort()).toInt())
+        dos.writeShort(java.lang.Short.reverseBytes(1.toShort()).toInt())
         dos.writeInt(Integer.reverseBytes(sampleRate))
         dos.writeInt(Integer.reverseBytes(byteRate))
-        dos.writeShort(Integer.reverseBytes(2))
-        dos.writeShort(Integer.reverseBytes(16))
+        dos.writeShort(java.lang.Short.reverseBytes(2.toShort()).toInt())
+        dos.writeShort(java.lang.Short.reverseBytes(16.toShort()).toInt())
         dos.writeBytes("data")
         dos.writeInt(Integer.reverseBytes(dataSize))
         for (sample in samples) {
-            dos.writeShort(Integer.reverseBytes(sample.toInt()))
+            dos.writeShort(java.lang.Short.reverseBytes(sample).toInt())
         }
         return bos.toByteArray()
     }
