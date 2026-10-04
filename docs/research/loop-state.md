@@ -16,7 +16,11 @@ bubble, narrow manifest, cloud audio repairs, build workflow and documentation.
 Full `testDebugUnitTest lintDebug assembleDebug assembleRelease` passed: 238 tests,
 0 failures/skips, lint 0 errors (171 warnings including retained legacy sources).
 Fresh emulator contact -> confirmation -> DIAL observed without Accessibility.
-Checker: separate read-only release_checker; final verdict pending.
+Checker: separate read-only release_checker APPROVED repository delivery of
+`4cef843813d4252f442c1f0d64cb66f42e8e0690`. Independently ran all four Gradle tasks
+with `--rerun-tasks`: 104 executed, 238 tests, no failures/errors/skips, zero lint
+errors. Inspected complete diff, merged manifest, CI/docs, dialer screenshot/XML.
+Approval explicitly does not close physical voice or live-key provider gates.
 Repair history: checker identified malformed reused WAV serialization, nonexistent
 Groq confidence field, and disappearing confirmation target during speech. All
 three repaired with fixtures and persistent target display. Initial lint exposed
@@ -26,5 +30,6 @@ WorkManager entrypoints removed from release manifest and contract-tested.
 Deferred decisions: Play publication and broader assistant tasks out of scope.
 Open release evidence: physical on-device speech and live BYOK transcription,
 as documented in device-verification.md; do not claim full voice release acceptance.
-Next action: independent verification, finish device evidence, push reviewed scope.
+Next action: review documentation-only evidence/cache-ignore update, then push
+approved scope to own main and verify remote/CI. No deployment or Play publication.
 Final commit / remote verification: pending.

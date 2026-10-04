@@ -21,6 +21,12 @@ Date: 2026-10-04. All contacts/numbers used below are synthetic test fixtures.
   stale dumps are not evidence of success.
 - Crash log was empty when inspected after the call handoff. No app crash was
   observed. This is not a claim of exhaustive performance or device testing.
+- Denying microphone access preserves the screen and typed input with an explicit
+  recovery message. After microphone access was granted for testing, the actual
+  on-device recognizer reported an unavailable language model. The app displayed
+  that condition and offered fallback choices without silently starting a cloud
+  recognizer. A system keyboard stylus tutorial briefly obscured touch input;
+  closing that system overlay restored normal interaction.
 
 ## Repeat the acceptance test
 
