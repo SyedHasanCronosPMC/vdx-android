@@ -58,7 +58,7 @@ class ActionExecutor(
      */
     suspend fun execute(
         action: ResolvedAction,
-        confirm: suspend (String) -> Boolean = { true }
+        confirm: suspend (String) -> Boolean = { false }
     ): ActionResult {
         return withContext(Dispatchers.Default) {
             try {
