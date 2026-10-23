@@ -14,6 +14,8 @@ import android.provider.ContactsContract
 import android.provider.Settings
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.vdx.call.CallContacts
+import com.vdx.call.CallFlow
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -141,24 +143,21 @@ class SystemController(private val context: Context) {
 
     private fun dial(numberOrName: String): String {
         if (numberOrName.isBlank()) return "No number to dial"
-        val number = if (numberOrName.matches(Regex("^[\\d+\\-\\s()]+$"))) {
-            numberOrName
-        } else {
-            contactLookup(numberOrName).let { result ->
-                Regex("""\+?[\d\-\s()]{7,}""").find(result)?.value ?: ""
-            }
+        val number = CallFlow.normalizeNumber(numberOrName) ?: run {
+            if (numberOrName.none { it.isLetter() }) return "Invalid phone number"
+            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED
+            ) return "Contacts permission needed for $numberOrName"
+            val matches = CallContacts(context).find(numberOrName.trim())
+            if (matches.isEmpty()) return "No contact found for $numberOrName"
+            if (matches.size != 1) return "Multiple numbers found for $numberOrName. Choose an exact number."
+            matches.single().number
         }
-        if (number.isBlank()) {
-            // Open dialer with name for a11y follow-up
-            val intent = Intent(Intent.ACTION_DIAL).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-            return "Open dialer for $numberOrName"
-        }
-        val uri = Uri.parse("tel:${number.filter { it.isDigit() || it == '+' }}")
+        val uri = Uri.parse("tel:$number")
         // First-release rule: ACTION_DIAL only (user taps Call). Never ACTION_CALL.
         val intent = Intent(Intent.ACTION_DIAL, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
-        return "Dialing $number"
+        return "Opened dialer for $number"
     }
 
     private fun smsCompose(number: String, message: String): String {
